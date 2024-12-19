@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Table</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<script type="text/javascript" src="iframe-phone.js"></script>
+<script type="text/javascript">
+	var phone = iframePhone.getIFrameEndpoint();
+	phone.addListener('getLearnerUrl', function () {
+ 	  console.log("iframe received message: getLearnerUrl");
+	  console.log("sending back "+window.location.href);
+ 	  phone.post('setLearnerUrl', window.location.href);
+	});
+	phone.addListener('getInteractiveState', function () {
+	  var state = document.getElementById('saveContent').innerHTML;
+ 	  console.log("iframe received message: getInteractiveState");
+	  console.log("sending back "+state);
+ 	  phone.post('interactiveState', state);
+	});
+	phone.addListener('loadInteractive', function (state) {
+ 	  console.log("iframe received message: loadInteractive");
+	  console.log("recieving "+state);
+ 	  document.getElementById('saveContent').innerHTML = state;
+	});
+	phone.initialize();
+</script>
+  <div id="saveContent">
+    <table id="editableTable">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th class="review">Review</th>
+                <th class="trueSentiment">True Sentiment</th>
+                <th class="cbest">Count of "best" (Cbest)</th>
+                <th class="condition">Condition: <i>Which condition is matched?</i></th>
+                <th class="predictedSentiment">Predicted Sentiment (S)</th>
+                <th class="correctness">Correctness: <i>Is the prediction correct?</i></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>A</td>
+                <td>Came here with my besties. I'll say there are better places.</td>
+                <td>Negative</td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>Hands down, Mineo's has the <u>best</u> pizza in Pittsburgh, if not the country.</td>
+                <td>Positive</td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>Their pizza is definitely some of the <u>best</u> around, and the white pizza is one of the <u>best</u> items on the menu.</td>
+                <td>Positive</td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</body>
+</html>
